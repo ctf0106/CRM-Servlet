@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ctf.dao.CustomerDao">
+
+	<resultMap type="Customer" id="CustomerResult">
+		<result property="id" column="id"/>
+		<result property="khno" column="khno"/>
+		<result property="name" column="name"/>
+		<result property="address" column="address"/>
+		<result property="postCode" column="postCode"/>
+		<result property="phone" column="phone"/>
+		<result property="fund" column="fund"/>
+		<result property="financing" column="financing"/>
+		<result property="companyID" column="companyID"/>
+	</resultMap>
+	<resultMap type="CustomerVo" id="CustomerVoResult">
+		<result property="id" column="id"/>
+		<result property="khno" column="khno"/>
+		<result property="name" column="name"/>
+		<result property="address" column="address"/>
+		<result property="postCode" column="postCode"/>
+		<result property="phone" column="phone"/>
+		<result property="fund" column="fund"/>
+		<result property="financing" column="financing"/>
+		<result property="companyName" column="companyName"/>
+	</resultMap>
+	
+	
+	<select id="find" parameterType="Map" resultMap="CustomerResult">
+		select * from t_customer
+		<where>
+			<if test="khno!=null and khno!='' ">
+				and khno like #{khno}
+			</if>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+		</where>
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	
+	<select id="findByCompanyId" parameterType="Integer" resultMap="CustomerResult">
+		select * from t_customer where companyID=#{id}
+	</select>
+	
+	<select id="getTotal" parameterType="Map" resultType="Long">
+		select count(*) from t_customer
+		<where>
+			<if test="khno!=null and khno!='' ">
+				and khno like #{khno}
+			</if>
+			<if test="name!=null and name!='' ">
+				and name like #{name}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="add" parameterType="Customer" keyProperty="id" useGeneratedKeys="true">
+		INSERT INTO t_customer (id,khno,name,address,postCode,phone,fund,financing,companyID,gmt_create,gmt_modified) 
+		VALUES (null,#{khno},#{name},#{address},#{postCode},#{phone},#{fund},#{financing},#{companyID},#{gmt_create},#{gmt_modified});
+	</insert>
+	
+	<update id="update" parameterType="Customer">
+	    update t_customer
+	    <set>
+	    	<if test="khno!=null and khno!='' ">
+				khno=#{khno},
+			</if>
+			<if test="name!=null and name!='' ">
+				name=#{name},
+			</if>
+			<if test="address!=null and address!='' ">
+				address=#{address},
+			</if>
+			<if test="postCode!=null and postCode!='' ">
+				postCode=#{postCode},
+			</if>
+			<if test="phone!=null and phone!='' ">
+				phone=#{phone},
+			</if>
+			<if test="fund!=null and fund!='' ">
+				phone=#{fund},
+			</if>
+			<if test="financing!=null and financing!='' ">
+				phone=#{financing},
+			</if>
+			<if test="companyID!=null and companyID!='' ">
+				companyID=#{companyID},
+			</if>
+			<if test="barcode!=null and barcode!='' ">
+				barcode=#{barcode},
+			</if>
+			<if test="qrcode!=null and qrcode!='' ">
+				qrcode=#{qrcode},
+			</if>
+			<if test="gmt_create!=null and gmt_create!='' ">
+				gmt_create=#{gmt_create},
+			</if>
+			<if test="gmt_modified!=null and gmt_modified!='' ">
+				gmt_modified=#{gmt_modified},
+			</if>
+	    </set>
+	    where id=#{id}
+	</update>
+	
+	<delete id="delete" parameterType="Integer">
+		delete from t_customer where id=#{id}
+	</delete>
+	
+	
+	<select id="findById" parameterType="Integer" resultMap="CustomerResult">
+		select * from t_customer where id=#{id}
+	</select>
+	
+	<select id="findByKhno" parameterType="String" resultMap="CustomerVoResult">
+		select t_customer.id,t_customer.khno,t_customer.name,t_customer.address,t_customer.phone,t_customer.postCode,t_customer.fund,t_customer.financing,t_customer.qrcode,t_company.name as companyName 
+		from t_customer LEFT JOIN t_company on t_customer.companyID=t_company.id where 1=1
+		<if test="_parameter != null">
+             and t_customer.khno=#{khno}
+        </if> 
+		
+	</select>
+	
+</mapper> 
