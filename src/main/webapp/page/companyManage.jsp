@@ -25,7 +25,7 @@
  
  function openCompanyAddDialog(){
 	 $("#dlg").dialog("open").dialog("setTitle","添加单位信息");
-	 url="${pageContext.request.contextPath}/company/save.do";
+	 url="${pageContext.request.contextPath}/company?action=save";
  }
  
  function openCompanyModifyDialog(){
@@ -37,7 +37,7 @@
 	 var row=selectedRows[0];
 	 $("#dlg").dialog("open").dialog("setTitle","编辑单位信息");
 	 $("#fm").form("load",row);
-	 url="${pageContext.request.contextPath}/company/save.do?id="+row.id;
+	 url="${pageContext.request.contextPath}/company?action=save&"+row.id;
  }
  
  function saveCompany(){
@@ -87,7 +87,7 @@
 	 var ids=strIds.join(",");
 	 $.messager.confirm("系统提示","您确定要删除这<font color=red>"+selectedRows.length+"</font>条数据吗？",function(r){
 		if(r){
-			$.post("${pageContext.request.contextPath}/company/delete.do",{ids:ids},function(result){
+			$.post("${pageContext.request.contextPath}/company?action=delete",{ids:ids},function(result){
 				if(result.success){
 					 $.messager.alert("系统提示","数据已成功删除！");
 					 $("#dg").datagrid("reload");
@@ -104,7 +104,7 @@
  function exportWord(){
 	 var row = $('#dg').datagrid('getSelected'); 
 	 if(row){
-	 window.location.href="${pageContext.request.contextPath}/company/export.do?id="+row.id
+	 window.location.href="${pageContext.request.contextPath}/company?action=export&id="+row.id
 	 }
  }
 </script>
@@ -113,7 +113,7 @@
 <body style="margin: 1px">
  <table id="dg" title="单位信息查询" class="easyui-datagrid"
     pagination="true" rownumbers="true"
-   url="${pageContext.request.contextPath}/company/list.do" fit="true" toolbar="#tb">
+   url="${pageContext.request.contextPath}/company?action=list" fit="true" toolbar="#tb">
    <thead data-options="frozen:true">
 		<tr>
 			<th field="cb" checkbox="true" align="center"></th>

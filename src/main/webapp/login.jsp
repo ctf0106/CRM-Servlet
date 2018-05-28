@@ -48,7 +48,7 @@ input:-webkit-autofill {
 					<canvas id="demo-canvas"></canvas>
 					<div class="logo_box">
 						<h3>欢迎你</h3>
-						<form id="adminlogin" name="adminlogin" action="${pageContext.request.contextPath}/user/login.do"  method="post">
+						<form id="adminlogin" name="adminlogin" action="${pageContext.request.contextPath}/user?action=login"  method="post">
 							<div class="input_outer">
 								<span class="u_user"></span>
 								<input name="userName" id="userName" value="${user.userName }" class="text"  style="color: #FFFFFF !important" type="text" placeholder="请输入账户">

@@ -7,13 +7,12 @@ package com.ctf.entity;
  */
 public class User {
 
-	private Integer id; // ���
-	private String userName; // �û���
-	private String password; // ����
-	private String trueName; // ��ʵ����
-	private String email; // �ʼ�
-	private String phone; // ��ϵ�绰
-	
+	private Integer id;
+	private String userName; 
+	private String password;
+	private String trueName; 
+	private String email;
+	private String phone; 
 	public Integer getId() {
 		return id;
 	}

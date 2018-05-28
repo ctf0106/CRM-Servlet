@@ -17,7 +17,7 @@
  
  $(function(){
 		$("#companyID").combobox({
-			 url:'../company/comboList.do',
+			 url:'../company?action=comboList',
 			    valueField:'id',
 			    textField:'name'
 		});
@@ -32,7 +32,7 @@
  
  function openCustomerAddDialog(){
 	 $("#dlg").dialog("open").dialog("setTitle","添加客户信息");
-	 url="${pageContext.request.contextPath}/customer/save.do";
+	 url="${pageContext.request.contextPath}/customer?action=save";
  }
  
  function openCustomerModifyDialog(){
@@ -44,7 +44,7 @@
 	 var row=selectedRows[0];
 	 $("#dlg").dialog("open").dialog("setTitle","编辑客户信息");
 	 $("#fm").form("load",row);
-	 url="${pageContext.request.contextPath}/customer/save.do?id="+row.id;
+	 url="${pageContext.request.contextPath}/customer?action=save&id="+row.id;
  }
  
  function saveCustomer(){
@@ -83,7 +83,7 @@
  function isExistName(name){
 		 $.ajaxSettings.async = false
 		 var flag;
-		 $.post("${pageContext.request.contextPath}/user/isExistName.do",{'name':name},function(result){
+		 $.post("${pageContext.request.contextPath}/user?action=isExistName",{'name':name},function(result){
 				 flag=result;	 
 		},"json");
 		 return flag;
@@ -118,7 +118,7 @@
 	 var ids=strIds.join(",");
 	 $.messager.confirm("系统提示","您确定要删除这<font color=red>"+selectedRows.length+"</font>条数据吗？",function(r){
 		if(r){
-			$.post("${pageContext.request.contextPath}/customer/delete.do",{ids:ids},function(result){
+			$.post("${pageContext.request.contextPath}/customer?action=delete",{ids:ids},function(result){
 				if(result.success){
 					 $.messager.alert("系统提示","数据已成功删除！");
 					 $("#dg").datagrid("reload");
@@ -168,7 +168,7 @@
 <body style="margin: 1px">
  <table id="dg" title="客户信息查询" class="easyui-datagrid"
     pagination="true" rownumbers="true"
-   url="${pageContext.request.contextPath}/customer/list.do" fit="true" toolbar="#tb">
+   url="${pageContext.request.contextPath}/customer?action=list" fit="true" toolbar="#tb">
    <thead data-options="frozen:true">
 		<tr>
 			<th field="cb" checkbox="true" align="center"></th>
@@ -234,7 +234,7 @@
    			<tr>
    			<td>归属单位：</td>
    			<td>
-   			<input class="easyui-combobox" id="companyID" name="companyID" data-options="panelHeight:'auto',editable:false,valueField:'id',textField:'name',url:'../company/comboList.do'"/><font color="red">*</font>
+   			<input class="easyui-combobox" id="companyID" name="companyID" data-options="panelHeight:'auto',editable:false,valueField:'id',textField:'name',url:'../company?action=comboList'"/><font color="red">*</font>
    			</td>
    		</tr>
    	</table>
