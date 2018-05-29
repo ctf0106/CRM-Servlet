@@ -33,10 +33,6 @@ public class UserDao{
 		return resultUser;
 	}
 
-	public List<User> find() {
-		return null;
-	}
-
 	public int getTotal(Connection con,User user) throws SQLException {
 		int resultCount = 0;
 		StringBuffer sb=new StringBuffer("select count(*) as count  from t_user where 1=1 ");
