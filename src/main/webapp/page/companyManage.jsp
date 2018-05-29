@@ -37,7 +37,7 @@
 	 var row=selectedRows[0];
 	 $("#dlg").dialog("open").dialog("setTitle","编辑单位信息");
 	 $("#fm").form("load",row);
-	 url="${pageContext.request.contextPath}/company?action=save&"+row.id;
+	 url="${pageContext.request.contextPath}/company?action=save&id="+row.id;
  }
  
  function saveCompany(){

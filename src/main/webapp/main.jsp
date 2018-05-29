@@ -30,7 +30,7 @@
 
 	function openPasswordModifyDialog(){
 		$("#dlg").dialog("open").dialog("setTitle","修改密码");
-		url="${pageContext.request.contextPath}/user/modifyPassword.do?id=${currentUser.id}";
+		url="${pageContext.request.contextPath}/user?action=modifyPassword&id=${currentUser.id}";
 	}
 	
 	function modifyPassword(){
@@ -81,7 +81,7 @@
 	function logout(){
 		$.messager.confirm("系统提示","您确定要退出系统吗？",function(r){
 			if(r){
-				window.location.href='${pageContext.request.contextPath}/user/logout.do';
+				window.location.href='${pageContext.request.contextPath}/user?action=logout';
 			} 
 		 });
 	}

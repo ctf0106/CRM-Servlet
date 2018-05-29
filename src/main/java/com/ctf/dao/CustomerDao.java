@@ -10,14 +10,13 @@ import java.util.List;
 import com.ctf.entity.Customer;
 import com.ctf.entity.CustomerVo;
 import com.ctf.entity.PageBean;
-import com.ctf.util.DateUtil;
 import com.ctf.util.StringUtil;
 
 public class CustomerDao{
 
 
 	public int add(Connection con,Customer customer) throws Exception {
-		String sql="INSERT INTO t_customer (id,khno,name,address,postCode,phone,fund,financing,companyID,gmt_create,gmt_modified) VALUES (null,?,?,?,?,?,?,?,?,?,?)";
+		String sql="INSERT INTO t_customer (id,khno,name,address,postCode,phone,fund,financing,companyID,gmt_create,gmt_modified,barcode,qrcode) VALUES (null,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement pstmt=con.prepareStatement(sql);
 			pstmt.setString(1, customer.getKhno());
 			pstmt.setString(2, customer.getName());
@@ -27,13 +26,15 @@ public class CustomerDao{
 			pstmt.setFloat(6, customer.getFund());
 			pstmt.setFloat(7, customer.getFinancing());
 			pstmt.setInt(8, customer.getCompanyID());
-			pstmt.setString(9, DateUtil.getCurrentDate());
-			pstmt.setString(10, DateUtil.getCurrentDate());
+			pstmt.setString(9, customer.getGmt_create());
+			pstmt.setString(10,customer.getGmt_modified());
+			pstmt.setString(11, customer.getBarcode());
+			pstmt.setString(12, customer.getQrcode());
 			return pstmt.executeUpdate();
 	}
 
 	public int update(Connection con,Customer customer) throws Exception {
-		String sql="UPDATE t_customer  name=?, address=?, postCode=?, phone=?, fund=?, financing=?, companyID=?, gmt_modified=? WHERE id=?";
+		String sql="UPDATE t_customer set name=?,address=?,postCode=?,phone=?,fund=?,financing=?,companyID=?,gmt_modified=? WHERE id=?";
 		PreparedStatement pstmt=con.prepareStatement(sql);
 		pstmt.setString(1, customer.getName());
 		pstmt.setString(2, customer.getAddress());
@@ -42,7 +43,7 @@ public class CustomerDao{
 		pstmt.setFloat(5, customer.getFund());
 		pstmt.setFloat(6, customer.getFinancing());
 		pstmt.setInt(7, customer.getCompanyID());
-		pstmt.setString(8, DateUtil.getCurrentDate());
+		pstmt.setString(8,customer.getGmt_modified());
 		pstmt.setInt(9, customer.getId());
 		return pstmt.executeUpdate();
 	}

@@ -116,7 +116,6 @@ public class CompanyServlet extends HttpServlet {
 		return null;
 	}
 	public String save(HttpServletRequest request,HttpServletResponse response){
-//		Company company,
 		int resultTotal=0;
 		String id = request.getParameter("id");
 		String address = request.getParameter("address");
@@ -132,7 +131,6 @@ public class CompanyServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		if(id==null){
-			company.setId(Integer.parseInt(id));
 			try {
 				resultTotal=companyDao.add(con,company);
 			} catch (SQLException e) {
@@ -140,6 +138,7 @@ public class CompanyServlet extends HttpServlet {
 			}
 		}else{
 			try {
+				company.setId(Integer.parseInt(id));
 				resultTotal=companyDao.update(con,company);
 			} catch (SQLException e) {
 				e.printStackTrace();

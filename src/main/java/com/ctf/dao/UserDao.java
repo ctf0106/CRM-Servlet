@@ -39,18 +39,22 @@ public class UserDao{
 
 	public int getTotal(Connection con,User user) throws SQLException {
 		int resultCount = 0;
-		String sql="select count(*) as count from t_user and userName like ?";
-		PreparedStatement pstmt=con.prepareStatement(sql);
-		pstmt.setString(1,user.getUserName());
+		StringBuffer sb=new StringBuffer("select count(*) as count  from t_user where 1=1 ");
+		if(user!=null && StringUtil.isNotEmpty(user.getUserName())){
+			sb.append(" and t_user.userName like '"+user.getUserName()+"'");
+		}
+		PreparedStatement pstmt=con.prepareStatement(sb.toString());
 		ResultSet rs=pstmt.executeQuery();
 		if(rs.next()){
 			resultCount=rs.getInt("count");
 		}
 		return resultCount;
+		
+		
 	}
 
 	public int update(Connection con,User user) throws SQLException {
-		String sql="update t_user set userName=?,password=?,trueName=?,email=?,phone=? where where id=?";
+		String sql="update t_user set userName=?,password=?,trueName=?,email=?,phone=? where id=?";
 		PreparedStatement pstmt=con.prepareStatement(sql);
 		pstmt.setString(1, user.getUserName());
 		pstmt.setString(2, user.getPassword());

@@ -60,9 +60,25 @@ public class UserServlet extends HttpServlet {
 			list(request,response);
 		}else if("delete".equals(action)){
 			delete(request,response);
+		}else if("modifyPassword".equals(action)){
+			modifyPassword(request,response);
+		}else if("logout".equals(action)){
+			logout(request,response);
 		}
 	}
 	
+	private void logout(HttpServletRequest request, HttpServletResponse response) {
+		HttpSession session = request.getSession();
+		session.removeAttribute("curretUser");  
+        //从定向到login.jsp  
+        try {
+			response.sendRedirect("login.jsp");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+		
+	}
+
 	private void delete(HttpServletRequest request, HttpServletResponse response) {
 		String ids = request.getParameter("ids");
 		String []idsStr=ids.split(",");
@@ -106,17 +122,15 @@ public class UserServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		List<User> userList = null;
+		int total = 0;
 		try {
+			user.setUserName(userName);
 			userList = userDao.find(con,pageBean,user);
+			total = userDao.getTotal(con,user);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		int total = 0;
-		try {
-			total = userDao.getTotal(con,user);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(userList);
 		result.put("rows", jsonArray);
@@ -186,13 +200,25 @@ public class UserServlet extends HttpServlet {
 	
 	public String save(HttpServletRequest request,HttpServletResponse response){
 		User user=new User();
+		String userName=request.getParameter("userName");
+		String password=request.getParameter("password");
+		String trueName=request.getParameter("trueName");
+		String email=request.getParameter("email");
+		String phone=request.getParameter("phone");
+		String id=request.getParameter("id");
+		user.setUserName(userName);
+		user.setPassword(password);
+		user.setTrueName(trueName);
+		user.setEmail(email);
+		user.setPhone(phone);
 		int resultTotal=0;
 		Connection con;
 		try {
 			con = dbUtil.getCon();
-			if(user.getId()==null){
+			if(id==null){
 				resultTotal=userDao.add(con, user);
 			}else{
+				user.setId(Integer.parseInt(id));
 				resultTotal=userDao.update(con, user);
 			}
 		} catch (Exception e) {
@@ -213,10 +239,12 @@ public class UserServlet extends HttpServlet {
 		return null;
 	}
 	
-	public String modifyPassword(Integer id,String newPassword,HttpServletResponse response){
+	public String modifyPassword(HttpServletRequest request,HttpServletResponse response){
+		String id=request.getParameter("id");
+		String newPassword=request.getParameter("newPassword");
 		int resultTotal = 0;
 		User user=new User();
-		user.setId(id);
+		user.setId(Integer.parseInt(id));
 		user.setPassword(newPassword);
 		Connection con;
 		try {

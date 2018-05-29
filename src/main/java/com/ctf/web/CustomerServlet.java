@@ -80,7 +80,7 @@ public class CustomerServlet extends HttpServlet {
 	}
 	
 
-	public String list(HttpServletRequest request,HttpServletResponse response){
+	public void list(HttpServletRequest request,HttpServletResponse response){
 		String page = request.getParameter("page");
 		String rows = request.getParameter("rows");
 		String khno = request.getParameter("khno");
@@ -118,7 +118,6 @@ public class CustomerServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
 	public String save(HttpServletRequest request,HttpServletResponse response){
@@ -171,6 +170,7 @@ public class CustomerServlet extends HttpServlet {
 		}else{
 		
 			try {
+				customer.setId(Integer.parseInt(id));
 				customer.setGmt_modified(DateUtil.getCurrentDate());
 				resultTotal=customerDao.update(con,customer);
 			} catch (Exception e) {
@@ -192,7 +192,7 @@ public class CustomerServlet extends HttpServlet {
 	}
 	
 	
-	public String delete(HttpServletRequest request,HttpServletResponse response){
+	public void delete(HttpServletRequest request,HttpServletResponse response){
 		String ids = request.getParameter("ids");
 		String []idsStr=ids.split(",");
 		String filePath=request.getServletContext().getRealPath("/");
@@ -230,7 +230,6 @@ public class CustomerServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
 	public String findById(String id,HttpServletResponse response){
