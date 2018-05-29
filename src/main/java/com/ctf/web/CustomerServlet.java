@@ -74,8 +74,6 @@ public class CustomerServlet extends HttpServlet {
 			list(request,response);
 		}else if("save".equals(action)){
 			save(request,response);
-		}else if("save".equals(action)){
-			save(request,response);
 		}else if("delete".equals(action)){
 			delete(request,response);
 		}
@@ -103,17 +101,14 @@ public class CustomerServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		List<CustomerVo> customerList = null;
-		try {
-			customerList = customerDao.find(con,pageBean,customer);
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
 		int total = 0;
 		try {
+			customerList = customerDao.find(con,pageBean,customer);
 			total = customerDao.getTotal(con,customer);
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		
 		JSONObject result=new JSONObject();
 		JSONArray jsonArray=JSONArray.fromObject(customerList);
 		result.put("rows", jsonArray);
@@ -159,19 +154,16 @@ public class CustomerServlet extends HttpServlet {
 			customer.setCompanyID(Integer.parseInt(companyID));
 			if(id==null){
 			try {
-				customer.setKhno("KH"+DateUtil.getCurrentDateStr());
+				khno="KH"+DateUtil.getCurrentDateStr();
+				customer.setKhno(khno);
 				customer.setGmt_create(DateUtil.getCurrentDate());
 				customer.setGmt_modified(DateUtil.getCurrentDate());
 				//新增记录
-				resultTotal=customerDao.add(con, customer);
 				String qrCode  = this.createQrCode(customer.getKhno(), BarcodeFormat.QR_CODE,request,300,300);
 				String barCode = this.createQrCode(customer.getKhno(), BarcodeFormat.CODE_128,request,70,350);
-				//更新条形码和二维码
-				Customer updateObj=new Customer();
-				updateObj.setQrcode(qrCode);
-				updateObj.setBarcode(barCode);
-				updateObj.setId(customer.getId());
-				customerDao.update(con,updateObj);
+				customer.setQrcode(qrCode);
+				customer.setBarcode(barCode);
+				resultTotal=customerDao.add(con, customer);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} 

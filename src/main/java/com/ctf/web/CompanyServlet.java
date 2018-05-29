@@ -65,8 +65,6 @@ public class CompanyServlet extends HttpServlet {
 			list(request,response);
 		}else if("save".equals(action)){
 			save(request,response);
-		}else if("save".equals(action)){
-			save(request,response);
 		}else if("delete".equals(action)){
 			delete(request,response);
 		}else if("export".equals(action)){

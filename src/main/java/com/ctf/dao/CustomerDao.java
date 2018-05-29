@@ -41,7 +41,7 @@ public class CustomerDao{
 		pstmt.setString(4, customer.getPhone());
 		pstmt.setFloat(5, customer.getFund());
 		pstmt.setFloat(6, customer.getFinancing());
-		pstmt.setFloat(7, customer.getCompanyID());
+		pstmt.setInt(7, customer.getCompanyID());
 		pstmt.setString(8, DateUtil.getCurrentDate());
 		pstmt.setInt(9, customer.getId());
 		return pstmt.executeUpdate();
